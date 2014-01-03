@@ -21,7 +21,7 @@ This is modified source code for the Tower Game Starter Kit ([wootstudio.ca/towe
 - Since I'm not an artist, I simply copied and modified the Fireball tower :)
  
 ### Draw new build menu
-- `game-media\buildmenu.png` contains the image that is used when the build menu is shown.
+- `game-media\buildmenu.png` contains the image that is used when the build menu is shown
 - We'll edit this to include our new tower by simply replacing the 'X' that would normally be at the bottom
 - Since you can click anywhere outside of the tower tiles to close the menu I figured this was an acceptable trade off
 	- Original `buildmenu.png`
@@ -35,9 +35,9 @@ This is modified source code for the Tower Game Starter Kit ([wootstudio.ca/towe
 
 ### Update build menu
 - Next we need to edit the code to
-	- understand the new layout
+	- understand the new build menu layout
 	- support our new tower type
-- In `TowerGameStarterKit.js:295` add a fourth `buildChoice4tileX` &Aacute; `buildChoice4tileY`, this gives a default position for the tile
+- In `TowerGameStarterKit.js:295` add a fourth `buildChoice4tileX` &Aacute; `buildChoice4tileY`, this gives a default position for the tower's tile on the game grid
 
 			var buildChoice4tileX = FAR_AWAY;
 			var buildChoice4tileY = FAR_AWAY;
@@ -68,8 +68,8 @@ This is modified source code for the Tower Game Starter Kit ([wootstudio.ca/towe
 	game_objects.push(buildMenuOverlay4);
 	
 - In `TowerGameStarterKit.js:2792` initialize the fourth overlay. This code checks to see if you can afford the tower.
-	- If you can afford the tower the buttonHighlightImageON (aka yellow highlight frame) is shown
-	- If you can't afford the tower, the overlay (that semi transparent gray tile) is placed over the tower showing how much longer (percent) until you can afford the tower
+	- If you can afford the tower the `buttonHighlightImageON` (aka yellow highlight frame) is shown
+	- If you can't afford the tower, the `buildMenuOverlay#` overlay (that semi transparent gray tile) is placed over the tower showing how much longer (by percent) until you can afford the tower
 
 				fundingPercent = player_Gold / buildCost[3];
 				if (fundingPercent >= 1) {
@@ -80,7 +80,7 @@ This is modified source code for the Tower Game Starter Kit ([wootstudio.ca/towe
 				}
 				buildMenuOverlay4.setHeight(buildMenuOverlayHeight - (buildMenuOverlayHeight * fundingPercent));
 
-- `TowerGameStarterKit.js:2713` we now we place the overlay and highlight sprites over our new tower tile 
+- `TowerGameStarterKit.js:2713` we now we place the overlay and highlight sprites over our tower's tile 
 
 	    buildMenuOverlay4.moveTo(px, py + 40);
 	    buttonHighlight[3].moveTo(px, py + 80 + 16);
@@ -90,7 +90,7 @@ This is modified source code for the Tower Game Starter Kit ([wootstudio.ca/towe
 			buildChoice4tileX = FAR_AWAY;
 			buildChoice4tileY = FAR_AWAY;
 
-- All interactions (clicks/taps) in the game are done on a virtual tile grid, so we need to define the coordinates (X,Y) for the tile that will represent our new tower when the build menu is shown and the user clicks/taps in the game which triggers `clickTile(tileX, tileY)`
+- All interactions (clicks/taps) in the game are done on a virtual tile grid, so we need to define the coordinates (x,y) for the tile that will represent our new tower when the build menu is shown and the user clicks/taps in the game which triggers `clickTile(tileX, tileY)`
 - We'll add this code in `TowerGameStarterKit.js:2880`
 
 			buildChoice4tileX = tileX;
@@ -108,7 +108,7 @@ This is modified source code for the Tower Game Starter Kit ([wootstudio.ca/towe
 		if (selectedBuildingStyle > 3)
 
 
-### Register tower image
+### Register the tower image
 
 - In `TowerGameStarterKit.js:2543` you'll find the code that chops up the `entities.png` file into individual images.
 - `chopImage` takes as parameters
@@ -129,7 +129,7 @@ This is modified source code for the Tower Game Starter Kit ([wootstudio.ca/towe
 		
 			var buildCost = [15, 25, 32, 35];
 
-- Why 35? Your cost could be anything, but I didn't have the font file used, so I cut out a 3 and a 5 from the other towers and used that for my new tower ;)
+- Why 35 you ask? Your cost could be anything, but I didn't have the font file used for the original images, so I cut out a 3 and a 5 from the other towers and used that for my new tower ;)
 
 ### Set the towers weapon info
 
@@ -137,7 +137,7 @@ This is modified source code for the Tower Game Starter Kit ([wootstudio.ca/towe
 
 		var WEAPON_FIRE_PLUS = 4;
 
-- In `TowerGameStarterKit.js:419` you'll find the function `GameWeapon(style)` which takes an style (offset) and returns the weapon info. We'll just use the existing info for `WEAPON_FIRE` and make it fire faster by adding `this.shootDelay` with a shorter time in milliseconds
+- In `TowerGameStarterKit.js:419` you'll find the function `GameWeapon(style)` which takes an style (offset) and returns the weapon info. We'll just use the existing info from `WEAPON_FIRE` and make it fire faster by adding `this.shootDelay` with a shorter time in milliseconds
 
 			case WEAPON_FIRE_PLUS:
 				this.projectilenumber = particleFIRE;
