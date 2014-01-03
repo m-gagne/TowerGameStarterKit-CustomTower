@@ -1,13 +1,15 @@
-# Tower Game Starter Kit - Adding A Custom Tower
+# Tower Game Starter Kit
 
-This is my modified source code for the Tower Game Starter Kit ([wootstudio.ca/towergamekit](wootstudio.ca/towergamekit)) that includes a custom tower type.
+##Adding A Custom Tower
+
+This is modified source code for the Tower Game Starter Kit ([wootstudio.ca/towergamekit](http://wootstudio.ca/towergamekit)) includes a custom tower type. Follow this README.md to see how I added a fourth tower type to this starter kit.
 
 
 ## Steps
 
 ### Draw new tower
 
-- Edit `game-media\entities.png` & draw new tower (64x96 pixels), you will need to make the image 64 pixels wider.
+- Edit `game-media\entities.png` & draw a new tower that is 64x96 pixels. Note: you will need to make the image 64 pixels wider to fit your new tower. Don't have an image editor? I used the great and free [paint.net](http://getpaint.net).
 	- Original `entities.png`
 		
 		![original entities.png](https://raw.github.com/m-gagne/TowerGameStarterKit-CustomTower/002a990c250d45bb90220bfc3e24b88b6b53f581/game-media/entities.png)
@@ -149,3 +151,6 @@ This is my modified source code for the Tower Game Starter Kit ([wootstudio.ca/t
 ## That's It!
 
 That's about it, you should be able to run your game and select your new tower and kill those pesky peasants!
+
+
+![screenshot](game-media/screenshot_new_tower.png)
