@@ -102,7 +102,7 @@ function TowerGameStarterKit() {
 	///////////////////////////////////////////////
 	// debug only - turn this off when you go live!
 	///////////////////////////////////////////////
-	var debugmode = 0; // 1 for debug info and profiler, >1 for DETAILED INFO
+	var debugmode = 1; // 1 for debug info and profiler, >1 for DETAILED INFO
 	///////////////////////////////////////////////
 
 	///////////////////////////////////////////////
@@ -276,7 +276,7 @@ function TowerGameStarterKit() {
 	///////////////////////////////////////////////
 	var ms_per_gold = 1000; // how long between each new gold piece earned
 	// costs for building units
-	var buildCost = [15, 25, 32];
+	var buildCost = [15, 25, 32, 35];
 	// which unit has the play selected for building
 	var selectedBuildingStyle = 0;
 
@@ -293,7 +293,9 @@ function TowerGameStarterKit() {
 	var buildChoice2tileY = FAR_AWAY;
 	var buildChoice3tileX = FAR_AWAY;
 	var buildChoice3tileY = FAR_AWAY;
-	// where the next tower will be placed
+	var buildChoice4tileX = FAR_AWAY;
+	var buildChoice4tileY = FAR_AWAY;
+    // where the next tower will be placed
 	var buildPendingPixelX = FAR_AWAY;
 	var buildPendingPixelY = FAR_AWAY;
 	var buildPendingTileX = FAR_AWAY;
@@ -304,6 +306,7 @@ function TowerGameStarterKit() {
 	var buildMenuOverlay1 = null;
 	var buildMenuOverlay2 = null;
 	var buildMenuOverlay3 = null;
+	var buildMenuOverlay4 = null;
 	var buildMenuOverlayHeight = 50; //pixels
 	// the glowing yellow outlines on clickable items
 	var buttonHighlightImageON; // images
@@ -409,6 +412,7 @@ function TowerGameStarterKit() {
 	var WEAPON_ARROWS = 1;
 	var WEAPON_FIRE = 2;
 	var WEAPON_ENERGY = 3;
+	var WEAPON_FIRE_PLUS = 4;
 	var DAMAGETYPE_PHYSICAL = 1;
 	var DAMAGETYPE_MAGICAL = 2;
 	var DAMAGETYPE_SLOW = 3;
@@ -428,6 +432,14 @@ function TowerGameStarterKit() {
 			this.particleHit = particleFIREHIT;
 			this.soundEffectName = 'shootFire';
 			break;
+		case WEAPON_FIRE_PLUS:
+		    this.projectilenumber = particleFIRE;
+		    this.damage = 40; // three hit to kill
+		    this.damagetype = DAMAGETYPE_MAGICAL;
+		    this.particleHit = particleFIREHIT;
+		    this.soundEffectName = 'shootFire';
+		    this.shootDelay = 1500; // twice as fast as WEAPON_FIRE
+		    break;
 		case WEAPON_ENERGY:
 			this.projectilenumber = particleENERGY;
 			this.damage = 75; // two hits to kill
@@ -1470,7 +1482,17 @@ function TowerGameStarterKit() {
 						buttonHighlight[2].setImage(buttonHighlightImageOFF);
 					}
 					buildMenuOverlay3.setHeight(buildMenuOverlayHeight - (buildMenuOverlayHeight * fundingPercent));
+
+					fundingPercent = player_Gold / buildCost[3];
+					if (fundingPercent >= 1) {
+					    fundingPercent = 1;
+					    buttonHighlight[3].setImage(buttonHighlightImageON);
+					} else {
+					    buttonHighlight[3].setImage(buttonHighlightImageOFF);
+					}
+					buildMenuOverlay4.setHeight(buildMenuOverlayHeight - (buildMenuOverlayHeight * fundingPercent));
 				}
+
 
 				if (particles_enabled)
 					updateParticles();
@@ -2543,6 +2565,7 @@ function TowerGameStarterKit() {
 			towerImages[1] = chopImage(jaws.assets.get("entities.png"), 0, 32, 64, 96);
 			towerImages[2] = chopImage(jaws.assets.get("entities.png"), 64, 32, 64, 96);
 			towerImages[3] = chopImage(jaws.assets.get("entities.png"), 128, 32, 64, 96);
+			towerImages[4] = chopImage(jaws.assets.get("entities.png"), 192, 32, 64, 96);
 		}
 
 		if (team == TEAM_BAD) // then we want walking avatars
@@ -2697,16 +2720,18 @@ function TowerGameStarterKit() {
 	}
 
 	function buildMenuMove(px, py) {
-		if (!buildMenuSprite)
-			return;
-		buildMenuSprite.moveTo(px, py);
-		buildMenuOverlay1.moveTo(px, py - 40);
-		buttonHighlight[0].moveTo(px, py - 40 + 8);
-		buildMenuOverlay2.moveTo(px - 64, py + 25);
-		buttonHighlight[1].moveTo(px - 64, py + 25 + 7);
-		buildMenuOverlay3.moveTo(px + 64, py + 25);
-		buttonHighlight[2].moveTo(px + 64, py + 25 + 7);
-	}
+	    if (!buildMenuSprite)
+	        return;
+	    buildMenuSprite.moveTo(px, py);
+	    buildMenuOverlay1.moveTo(px, py - 40);
+	    buttonHighlight[0].moveTo(px, py - 40 + 8);
+	    buildMenuOverlay2.moveTo(px - 64, py + 25);
+	    buttonHighlight[1].moveTo(px - 64, py + 25 + 7);
+	    buildMenuOverlay3.moveTo(px + 64, py + 25);
+	    buttonHighlight[2].moveTo(px + 64, py + 25 + 7);
+	    buildMenuOverlay4.moveTo(px, py + 80);
+	    buttonHighlight[3].moveTo(px, py + 80 + 16);
+    }
 
 	function buildMenuOFF() {
 		if (debugmode)
@@ -2719,6 +2744,8 @@ function TowerGameStarterKit() {
 		buildChoice2tileY = FAR_AWAY;
 		buildChoice3tileX = FAR_AWAY;
 		buildChoice3tileY = FAR_AWAY;
+		buildChoice4tileX = FAR_AWAY;
+		buildChoice4tileY = FAR_AWAY;
 		buildPendingPixelX = FAR_AWAY;
 		buildPendingPixelY = FAR_AWAY;
 		buildPendingTileX = FAR_AWAY;
@@ -2796,10 +2823,15 @@ function TowerGameStarterKit() {
 			buildMenuOverlay3 = extractSprite(jaws.assets.get("gui.png"), 272, 464, 50, 50, {
 					anchor : "center_bottom"
 				});
+			buildMenuOverlay4 = extractSprite(jaws.assets.get("gui.png"), 272, 464, 50, 50, {
+			    anchor: "center_bottom"
+			});
 			game_objects.push(buildMenuOverlay1);
 			game_objects.push(buildMenuOverlay2);
 			game_objects.push(buildMenuOverlay3);
-			// the clickable buttons (a glowing yellow outline so we know we have enough money)
+			game_objects.push(buildMenuOverlay4);
+
+		    // the clickable buttons (a glowing yellow outline so we know we have enough money)
 			buttonHighlightImageON = chopImage(jaws.assets.get("gui.png"), 0, 320, 64, 64);
 			buttonHighlightImageOFF = chopImage(jaws.assets.get("gui.png"), 288, 320, 64, 64);
 			buttonHighlight[0] = new jaws.Sprite({
@@ -2814,9 +2846,14 @@ function TowerGameStarterKit() {
 					image : buttonHighlightImageON,
 					anchor : "center_bottom"
 				});
+			buttonHighlight[3] = new jaws.Sprite({
+                    image: buttonHighlightImageON,
+			        anchor: "center_bottom"
+			    });
 			game_objects.push(buttonHighlight[0]);
 			game_objects.push(buttonHighlight[1]);
 			game_objects.push(buttonHighlight[2]);
+			game_objects.push(buttonHighlight[3]);
 		}
 
 		// fixme todo: the buildChoice1tileX etc is a hack: use guiSprites action and remember pending build xy
@@ -2841,6 +2878,8 @@ function TowerGameStarterKit() {
 				buildChoice2tileY = tileY;
 				buildChoice3tileX = tileX + 1;
 				buildChoice3tileY = tileY;
+				buildChoice4tileX = tileX;
+				buildChoice4tileY = tileY + 1;
 				buildPendingPixelX = px;
 				buildPendingPixelY = py;
 				buildPendingTileX = tileX;
@@ -2870,6 +2909,9 @@ function TowerGameStarterKit() {
 			if (tileX == buildChoice3tileX && tileY == buildChoice3tileY) {
 				selectedBuildingStyle = 2;
 			}
+			if (tileX == buildChoice4tileX && tileY == buildChoice4tileY) {
+			    selectedBuildingStyle = 3;
+			}
 
 			if (selectedBuildingStyle == FAR_AWAY) {
 				if (debugmode)
@@ -2898,14 +2940,14 @@ function TowerGameStarterKit() {
 					startParticleSystem(buildPendingPixelX, buildPendingPixelY, particleBUILD);
 
 					// spawn a new tower here
-					var justBuilt = spawnEntity(buildPendingPixelX, buildPendingPixelY, selectedBuildingStyle + 1, TEAM_GOOD); // tower 1,2,3
+					var justBuilt = spawnEntity(buildPendingPixelX, buildPendingPixelY, selectedBuildingStyle + 1, TEAM_GOOD); // tower 1,2,3,4
 
 					// pay up!
 					player_Gold -= buildCost[selectedBuildingStyle];
 
 					// debug fixme todo lame - buildMenu!
 					selectedBuildingStyle++;
-					if (selectedBuildingStyle > 2)
+					if (selectedBuildingStyle > 3)
 						selectedBuildingStyle = 0;
 
 					updateGoldGUI();

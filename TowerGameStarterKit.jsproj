@@ -55,6 +55,7 @@
     <AppxManifest Include="package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include=".gitignore" />
     <Content Include="css\default.css" />
     <Content Include="game-media\buildmenu.png" />
     <Content Include="game-media\cinematic.png" />
@@ -114,6 +115,7 @@
     <Content Include="js\jaws.js" />
     <Content Include="js\TowerGameStarterKit.js" />
     <Content Include="js\tween.js" />
+    <Content Include="README.md" />
     <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <ItemGroup>
