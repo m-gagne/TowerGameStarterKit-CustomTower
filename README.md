@@ -8,8 +8,13 @@ This is my modified source code for the Tower Game Starter Kit ([wootstudio.ca/t
 ### Draw new tower
 
 - Edit `game-media\entities.png` & draw new tower (64x96 pixels), you will need to make the image 64 pixels wider.
+	- Original `entities.png`
+		
+		![original entities.png](https://raw.github.com/m-gagne/TowerGameStarterKit-CustomTower/002a990c250d45bb90220bfc3e24b88b6b53f581/game-media/entities.png)
+	
+	- Updated `entities.png`
 
-	![updated entities.png](game-media/entities.png)
+		![updated entities.png](game-media/entities.png)
 
 - Since I'm not an artist, I simply copied and modified the Fireball tower :)
  
@@ -17,8 +22,14 @@ This is my modified source code for the Tower Game Starter Kit ([wootstudio.ca/t
 - `game-media\buildmenu.png` contains the image that is used when the build menu is shown.
 - We'll edit this to include our new tower by simply replacing the 'X' that would normally be at the bottom
 - Since you can click anywhere outside of the tower tiles to close the menu I figured this was an acceptable trade off
+	- Original `buildmenu.png`
+		
+		![original buildmenu.png](https://raw.github.com/m-gagne/TowerGameStarterKit-CustomTower/002a990c250d45bb90220bfc3e24b88b6b53f581/game-media/buildmenu.png)
+	
+	- Updated `buildmenu.png`
 
-	![updated buildmenu.png](game-media/buildmenu.png)
+		![updated buildmenu.png](game-media/buildmenu.png)
+
 
 ### Update build menu
 - Next we need to edit the code to
